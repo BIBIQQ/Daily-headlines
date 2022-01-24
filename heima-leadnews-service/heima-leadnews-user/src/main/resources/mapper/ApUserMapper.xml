@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!--mapper对应接口限定名-->
-<mapper namespace="com.heima.user.mapper.AsUserMapper">
+<mapper namespace="com.heima.user.mapper.ApUserMapper">
 
     <resultMap type="com.heima.model.user.pojos.ApUser" id="UserMap">
         <result property="id" column="id" jdbcType="INTEGER"/>
@@ -20,5 +20,10 @@
         <result property="flag" column="flag" jdbcType="INTEGER"/>
         <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
     </resultMap>
+
+    <!--通过用户名搜索-->
+    <select id="getOneByPhone" resultMap="UserMap">
+        select * from ap_user where phone = #{phone}
+    </select>
 
 </mapper>
