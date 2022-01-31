@@ -2,6 +2,7 @@ package com.heima.app.geteway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
@@ -9,7 +10,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @date 2022/1/24
  * @TIME:11:30
  */
-@SpringBootApplication
+@SpringBootApplication(exclude= {DataSourceAutoConfiguration.class})
 @EnableDiscoveryClient  //开启注册中心
 public class GatewayApplication {
 
