@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--mapper对应接口限定名-->
+<mapper namespace="com.heima.article.mapper.ApArticleMapper">
+    <resultMap type="com.heima.model.article.pojos.ApArticle" id="ArticleMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="authorId" column="author_id" jdbcType="INTEGER"/>
+        <result property="authorName" column="author_name" jdbcType="VARCHAR"/>
+        <result property="channelId" column="channel_id" jdbcType="INTEGER"/>
+        <result property="channelName" column="channel_name" jdbcType="VARCHAR"/>
+        <result property="layout" column="layout" jdbcType="INTEGER"/>
+        <result property="flag" column="flag" jdbcType="VARCHAR"/>
+        <result property="images" column="images" jdbcType="VARCHAR"/>
+        <result property="labels" column="labels" jdbcType="VARCHAR"/>
+        <result property="likes" column="likes" jdbcType="INTEGER"/>
+        <result property="collection" column="collection" jdbcType="INTEGER"/>
+        <result property="comment" column="comment" jdbcType="INTEGER"/>
+        <result property="views" column="views" jdbcType="INTEGER"/>
+        <result property="provinceId" column="province_id" jdbcType="INTEGER"/>
+        <result property="cityId" column="city_id" jdbcType="INTEGER"/>
+        <result property="countyId" column="county_id" jdbcType="INTEGER"/>
+        <result property="createdTime" column="created_time" jdbcType="DATE"/>
+        <result property="publishTime" column="publish_time" jdbcType="DATE"/>
+        <result property="syncStatus" column="sync_status" jdbcType="BOOLEAN"/>
+        <result property="origin" column="origin" jdbcType="BOOLEAN"/>
+        <result property="staticUrl" column="static_url" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--加载 文章列表-->
+    <select id="LoadArticleList" resultMap="ArticleMap">
+        SELECT aa.* FROM ap_article aa LEFT JOIN ap_article_config ac ON aa.id = ac.article_id
+        <where>
+            AND ac.is_delete != 1
+            AND ac.is_down != 1
+            <if test="type != null and type == 1">
+                AND aa.publish_time <![CDATA[<]]>  #{dto.minBehotTime}
+            </if>
+            <if test="type != null and type == 2">
+                And aa.publish_time <![CDATA[>]]> #{dto.maxBehotTime}
+            </if>
+            <if test="dto.tag != '__all__'">
+                AND aa.channel_id = #{dto.tag}
+            </if>
+        </where>
+        order by aa.publish_time desc
+        limit #{dto.size}
+
+    </select>
+
+</mapper>
